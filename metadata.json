@@ -1,0 +1,5 @@
+{
+  "name": "Dark Stories AI",
+  "description": "Un juego de misterio y pensamiento lateral donde resuelves casos crípticos haciendo preguntas de sí o no a una IA.",
+  "requestFramePermissions": ["microphone"]
+}
