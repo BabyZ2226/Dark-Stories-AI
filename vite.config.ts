@@ -6,8 +6,8 @@ import { defineConfig, loadEnv } from 'vite';
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
-    // 👇 RUTA PARA EL REPO DE LA BOMBA 👇
-    base: '/BOMB-DEFUSAL/', 
+    // 👇 LA RUTA EXACTA PARA ESTE REPOSITORIO 👇
+    base: '/Dark-Stories-AI/', 
     
     plugins: [react(), tailwindcss()],
     define: {
