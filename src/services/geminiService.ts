@@ -1,7 +1,15 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Case, Question } from "../types";
 
-const apiKey = process.env.GEMINI_API_KEY;
+// Use a safer way to access the API key that works in both dev and prod
+const getApiKey = () => {
+  // Try to get it from process.env (injected by Vite define)
+  const key = (process as any).env?.GEMINI_API_KEY;
+  if (key && key !== 'undefined' && key !== 'null' && key !== '') return key;
+  return null;
+};
+
+const apiKey = getApiKey();
 const ai = new GoogleGenAI({ apiKey: apiKey || 'missing-api-key' });
 
 export const INITIAL_CASES: Case[] = [
