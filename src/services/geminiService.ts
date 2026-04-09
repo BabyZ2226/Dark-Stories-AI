@@ -1,16 +1,7 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Case, Question } from "../types";
 
-// Use a safer way to access the API key that works in both dev and prod
-const getApiKey = () => {
-  // Try to get it from process.env (injected by Vite define)
-  const key = (process as any).env?.GEMINI_API_KEY;
-  if (key && key !== 'undefined' && key !== 'null' && key !== '') return key;
-  return null;
-};
-
-const apiKey = getApiKey();
-const ai = new GoogleGenAI({ apiKey: apiKey || 'missing-api-key' });
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 export const INITIAL_CASES: Case[] = [
   {
@@ -37,11 +28,6 @@ export const INITIAL_CASES: Case[] = [
 ];
 
 export async function askQuestion(currentCase: Case, questionText: string): Promise<Question['answer']> {
-  if (!apiKey || apiKey === 'missing-api-key') {
-    console.error("API Key is missing. Please set GEMINI_API_KEY.");
-    return "NO PUEDO RESPONDER";
-  }
-
   const prompt = `
     Estamos jugando a "Dark Stories" (Historias Negras). 
     El caso es: "${currentCase.mystery}"
@@ -89,12 +75,6 @@ export async function askQuestion(currentCase: Case, questionText: string): Prom
 }
 
 export async function generateNewCase(difficulty: string = 'Medio'): Promise<Case> {
-  if (!apiKey || apiKey === 'missing-api-key') {
-    console.error("API Key is missing. Please set GEMINI_API_KEY.");
-    alert("Falta la clave de API de Gemini. Si estás en GitHub, asegúrate de configurarla en los Secrets.");
-    return { ...INITIAL_CASES[0], difficulty: difficulty as any };
-  }
-
   const prompt = `
     Genera un nuevo caso de "Dark Stories" (Historias Negras) con dificultad ${difficulty}. 
     - Fácil: El misterio es directo y la solución es lógica y común.
